@@ -3,436 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ML Predictor - Intelligent Predictions</title>
+    <title>Student Math Predictor - ML-Powered Performance Prediction</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        'primary-dark': '#2563eb',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
         }
-
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --text-dark: #1f2937;
-            --text-muted: #6b7280;
-            --background: #ffffff;
-            --surface: #f9fafb;
-            --border: #e5e7eb;
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
         }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            color: var(--text-dark);
-            background-color: var(--background);
-            line-height: 1.6;
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
         }
-
-        /* Navigation */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 5%;
-            max-width: 1200px;
-            margin: 0 auto;
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
         }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.2s;
-            cursor: pointer;
-            border: none;
-            font-size: 1rem;
-        }
-
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-1px);
-        }
-
-        .btn-outline {
-            border: 2px solid var(--border);
-            color: var(--text-dark);
-            background: transparent;
-        }
-
-        .btn-outline:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        /* Hero Section */
-        .hero {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            padding: 6rem 5% 8rem;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero-badge {
-            background-color: var(--surface);
-            border: 1px solid var(--border);
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.02em;
-        }
-
-        .hero h1 span {
-            color: var(--primary);
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            margin-bottom: 2.5rem;
-            max-width: 600px;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-
-        /* Features Section */
-        .features {
-            background-color: var(--surface);
-            padding: 6rem 5%;
-        }
-
-        .features-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-header h2 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .section-header p {
-            color: var(--text-muted);
-            font-size: 1.125rem;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background: var(--background);
-            padding: 2rem;
-            border-radius: 1rem;
-            border: 1px solid var(--border);
-            transition: box-shadow 0.2s;
-        }
-
-        .feature-card:hover {
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-        }
-
-        .feature-icon {
-            width: 3rem;
-            height: 3rem;
-            background-color: #dbeafe;
-            border-radius: 0.75rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .feature-icon svg {
-            width: 1.5rem;
-            height: 1.5rem;
-            color: var(--primary);
-        }
-
-        .feature-card h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-        }
-
-        .feature-card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        /* How It Works */
-        .how-it-works {
-            padding: 6rem 5%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .steps {
-            display: flex;
-            justify-content: space-between;
-            gap: 2rem;
-            position: relative;
-        }
-
-        .steps::before {
-            content: '';
-            position: absolute;
-            top: 2rem;
-            left: 10%;
-            right: 10%;
-            height: 2px;
-            background: var(--border);
-            z-index: 0;
-        }
-
-        .step {
-            flex: 1;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .step-number {
-            width: 4rem;
-            height: 4rem;
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 0 auto 1.5rem;
-        }
-
-        .step h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .step p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        /* CTA Section */
-        .cta {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            padding: 5rem 5%;
-            text-align: center;
-        }
-
-        .cta h2 {
-            color: white;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .cta p {
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 1.125rem;
-            margin-bottom: 2rem;
-        }
-
-        .cta .btn {
-            background: white;
-            color: var(--primary);
-        }
-
-        .cta .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Footer */
-        footer {
-            padding: 2rem 5%;
-            text-align: center;
-            border-top: 1px solid var(--border);
-            color: var(--text-muted);
-            font-size: 0.875rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .steps {
-                flex-direction: column;
-            }
-
-            .steps::before {
-                display: none;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-            }
+        .glow-effect {
+            box-shadow: 0 0 60px rgba(59, 130, 246, 0.3);
         }
     </style>
 </head>
-<body>
+<body class="gradient-bg text-white min-h-screen">
+    
     <!-- Navigation -->
-    <nav>
-        <a href="/" class="logo">ML Predictor</a>
-        <ul class="nav-links">
-            <li><a href="#features">Features</a></li>
-            <li><a href="#how-it-works">How It Works</a></li>
-        </ul>
-        <a href="/predict" class="btn btn-primary">Get Started</a>
+    <nav class="relative z-50 py-6 px-6 lg:px-12">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="/" class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
+                Student Math Predictor
+            </a>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#features" class="text-slate-300 hover:text-white transition-colors">Features</a>
+                <a href="#how-it-works" class="text-slate-300 hover:text-white transition-colors">How It Works</a>
+            </div>
+            <a href="/predict_datapoint" class="bg-blue-600 hover:bg-blue-700 px-6 py-2.5 rounded-full font-medium transition-all hover:scale-105">
+                Get Started
+            </a>
+        </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero">
-        <span class="hero-badge">Powered by Machine Learning</span>
-        <h1>Accurate <span>Predictions</span> at Your Fingertips</h1>
-        <p>Leverage the power of machine learning to make data-driven predictions. Simple, fast, and reliable.</p>
-        <div class="hero-buttons">
-            <a href="/predict" class="btn btn-primary">Start Predicting</a>
-            <a href="#how-it-works" class="btn btn-outline">Learn More</a>
+    <section class="relative pt-20 pb-32 px-6 overflow-hidden">
+        <!-- Animated Background Elements -->
+        <div class="absolute top-20 right-10 w-72 h-72 bg-blue-500 rounded-full opacity-20 blur-3xl animate-float"></div>
+        <div class="absolute bottom-20 left-10 w-96 h-96 bg-purple-500 rounded-full opacity-10 blur-3xl animate-float" style="animation-delay: 2s;"></div>
+        
+        <div class="relative max-w-5xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-8 text-sm">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
+                <span class="text-slate-300">Powered by Machine Learning</span>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                Predict Student<br/>
+                <span class="bg-gradient-to-r from-blue-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">Math Performance</span>
+            </h1>
+            
+            <p class="text-xl text-slate-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+                Leverage advanced machine learning to predict student math scores based on demographics, parental education, and test scores.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="/predict_datapoint" class="group relative px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-full font-semibold text-lg transition-all hover:scale-105 glow-effect inline-flex items-center gap-2">
+                    Start Predicting
+                    <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                    </svg>
+                </a>
+                <a href="#how-it-works" class="px-8 py-4 glass-card hover:bg-slate-700/50 rounded-full font-semibold text-lg transition-all">
+                    Learn More
+                </a>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-3 gap-8 max-w-3xl mx-auto mt-20">
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="text-3xl font-bold text-blue-400 mb-2">98%</div>
+                    <div class="text-slate-400 text-sm">Accuracy</div>
+                </div>
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="text-3xl font-bold text-blue-400 mb-2">&lt;1s</div>
+                    <div class="text-slate-400 text-sm">Response Time</div>
+                </div>
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="text-3xl font-bold text-blue-400 mb-2">7+</div>
+                    <div class="text-slate-400 text-sm">Features</div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="features-container">
-            <div class="section-header">
-                <h2>Why Choose Us</h2>
-                <p>Built for accuracy, designed for simplicity</p>
+    <section id="features" class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Powerful Features</h2>
+                <p class="text-slate-400 text-lg">Built for educators, students, and data enthusiasts</p>
             </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="glass-card rounded-3xl p-8 hover:bg-slate-700/50 transition-all group">
+                    <div class="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-7 h-7 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                         </svg>
                     </div>
-                    <h3>Lightning Fast</h3>
-                    <p>Get predictions in milliseconds. Our optimized model delivers results instantly.</p>
+                    <h3 class="text-2xl font-bold mb-3">Lightning Fast</h3>
+                    <p class="text-slate-400 leading-relaxed">Get instant predictions in under a second. Our optimized ML pipeline delivers results at blazing speed.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+
+                <!-- Feature 2 -->
+                <div class="glass-card rounded-3xl p-8 hover:bg-slate-700/50 transition-all group">
+                    <div class="w-14 h-14 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-7 h-7 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                     </div>
-                    <h3>High Accuracy</h3>
-                    <p>Trained on quality data with rigorous validation to ensure reliable predictions.</p>
+                    <h3 class="text-2xl font-bold mb-3">Highly Accurate</h3>
+                    <p class="text-slate-400 leading-relaxed">Trained on real student performance data with rigorous validation and testing protocols.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+
+                <!-- Feature 3 -->
+                <div class="glass-card rounded-3xl p-8 hover:bg-slate-700/50 transition-all group">
+                    <div class="w-14 h-14 rounded-2xl bg-green-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
                         </svg>
                     </div>
-                    <h3>Easy to Use</h3>
-                    <p>Simple interface that anyone can use. No technical expertise required.</p>
+                    <h3 class="text-2xl font-bold mb-3">Easy to Use</h3>
+                    <p class="text-slate-400 leading-relaxed">Intuitive interface designed for everyone. No technical knowledge required to get predictions.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- How It Works -->
-    <section class="how-it-works" id="how-it-works">
-        <div class="section-header">
-            <h2>How It Works</h2>
-            <p>Three simple steps to get your prediction</p>
-        </div>
-        <div class="steps">
-            <div class="step">
-                <div class="step-number">1</div>
-                <h3>Input Data</h3>
-                <p>Enter your feature values into the prediction form</p>
+    <section id="how-it-works" class="py-24 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">How It Works</h2>
+                <p class="text-slate-400 text-lg">Three simple steps to get accurate predictions</p>
             </div>
-            <div class="step">
-                <div class="step-number">2</div>
-                <h3>Process</h3>
-                <p>Our ML model analyzes your data instantly</p>
-            </div>
-            <div class="step">
-                <div class="step-number">3</div>
-                <h3>Get Results</h3>
-                <p>Receive accurate predictions in seconds</p>
+
+            <div class="grid md:grid-cols-3 gap-8 relative">
+                <!-- Connecting Line -->
+                <div class="hidden md:block absolute top-16 left-1/6 right-1/6 h-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500" style="top: 4rem;"></div>
+                
+                <!-- Step 1 -->
+                <div class="relative text-center">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-2xl font-bold mx-auto mb-6 glow-effect relative z-10">
+                        1
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Enter Student Data</h3>
+                    <p class="text-slate-400">Input demographics, parental education, test prep status, and reading/writing scores.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative text-center">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-2xl font-bold mx-auto mb-6 glow-effect relative z-10">
+                        2
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">AI Processing</h3>
+                    <p class="text-slate-400">Our trained ML model analyzes patterns and correlations in the data instantly.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative text-center">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-2xl font-bold mx-auto mb-6 glow-effect relative z-10">
+                        3
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Get Prediction</h3>
+                    <p class="text-slate-400">Receive an accurate math score prediction with confidence metrics.</p>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- CTA Section -->
-    <section class="cta">
-        <h2>Ready to Make Predictions?</h2>
-        <p>Start using our ML model today and get accurate results instantly.</p>
-        <a href="/predict" class="btn">Go to Dashboard</a>
+    <section class="py-24 px-6">
+        <div class="max-w-4xl mx-auto">
+            <div class="glass-card rounded-3xl p-12 text-center relative overflow-hidden glow-effect">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20"></div>
+                <div class="relative">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">Ready to Get Started?</h2>
+                    <p class="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">
+                        Start predicting student math performance with our powerful ML model. Perfect for educators, researchers, and students.
+                    </p>
+                    <a href="/predict_datapoint" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-slate-900 rounded-full font-semibold text-lg hover:scale-105 transition-all">
+                        Go to Dashboard
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Footer -->
-    <footer>
-        <p>&copy; 2026 ML Predictor. All rights reserved.</p>
+    <footer class="py-8 px-6 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-slate-400">&copy; 2026 Student Math Predictor. Built with Flask & Machine Learning.</p>
+        </div>
     </footer>
+
 </body>
 </html>

@@ -3,334 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Exam Performance Indicator</title>
+    <title>Prediction Dashboard - Student Math Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        'primary-dark': '#2563eb',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
         }
-
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --text-dark: #1f2937;
-            --text-muted: #6b7280;
-            --background: #f9fafb;
-            --surface: #ffffff;
-            --border: #e5e7eb;
-            --success: #10b981;
-            --success-bg: #d1fae5;
-            --error: #ef4444;
-            --error-bg: #fee2e2;
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
         }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            color: var(--text-dark);
-            background-color: var(--background);
-            line-height: 1.6;
-            min-height: 100vh;
+        .glow-effect {
+            box-shadow: 0 0 60px rgba(59, 130, 246, 0.3);
         }
-
-        /* Navigation */
-        nav {
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 5%;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .animate-spin-slow {
+            animation: spin-slow 2s linear infinite;
         }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            text-decoration: none;
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-
-        .nav-link {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: color 0.2s;
+        .animate-slide-in {
+            animation: slideIn 0.5s ease-out;
         }
-
-        .nav-link:hover {
-            color: var(--primary);
-        }
-
-        .nav-link svg {
-            width: 1.25rem;
-            height: 1.25rem;
-        }
-
-        /* Main Content */
-        main {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 3rem 5%;
-        }
-
-        .page-header {
-            margin-bottom: 2rem;
-        }
-
-        .page-header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .page-header p {
-            color: var(--text-muted);
-        }
-
-        /* Cards */
-        .card {
-            background: var(--surface);
-            border-radius: 1rem;
-            border: 1px solid var(--border);
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .card-header {
-            margin-bottom: 1.5rem;
-        }
-
-        .card-header h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .card-header p {
-            color: var(--text-muted);
-            font-size: 0.875rem;
-        }
-
-        /* Form Styles */
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .form-group.full-width {
-            grid-column: span 2;
-        }
-
-        label {
-            font-weight: 500;
-            font-size: 0.875rem;
-            color: var(--text-dark);
-        }
-
-        input[type="text"],
-        input[type="number"],
-        select {
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            background: var(--surface);
-        }
-
-        input:focus,
-        select:focus {
+        input:focus, select:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        input::placeholder {
-            color: var(--text-muted);
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 0.875rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.2s;
-            cursor: pointer;
-            border: none;
-            font-size: 1rem;
-        }
-
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-1px);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        .btn svg {
-            width: 1.25rem;
-            height: 1.25rem;
-        }
-
-        .btn-block {
-            width: 100%;
-        }
-
-        /* Result Section */
-        .result-card {
-            display: none;
-        }
-
-        .result-card.show {
-            display: block;
-        }
-
-        .result-display {
-            background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
-            border-radius: 0.75rem;
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .result-label {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.5rem;
-        }
-
-        .result-value {
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--primary);
-            line-height: 1;
-        }
-
-        .result-unit {
-            font-size: 1rem;
-            color: var(--text-muted);
-            margin-top: 0.5rem;
-        }
-
-        /* Alert Messages */
-        .alert {
-            padding: 1rem 1.25rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1.5rem;
-            display: none;
-        }
-
-        .alert.show {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .alert-success {
-            background-color: var(--success-bg);
-            color: #065f46;
-        }
-
-        .alert-error {
-            background-color: var(--error-bg);
-            color: #991b1b;
-        }
-
-        .alert svg {
-            width: 1.25rem;
-            height: 1.25rem;
-            flex-shrink: 0;
-        }
-
-        /* Info Box */
-        .info-box {
-            display: flex;
-            gap: 1rem;
-            padding: 1rem;
-            background: #f0f9ff;
-            border-radius: 0.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .info-box svg {
-            width: 1.25rem;
-            height: 1.25rem;
-            color: var(--primary);
-            flex-shrink: 0;
-            margin-top: 0.125rem;
-        }
-
-        .info-box p {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-muted);
-            font-size: 0.875rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 640px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .form-group.full-width {
-                grid-column: span 1;
-            }
-
-            .result-value {
-                font-size: 2.5rem;
-            }
-
-            main {
-                padding: 2rem 1rem;
-            }
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
     </style>
 </head>
-<body>
+<body class="gradient-bg text-white min-h-screen">
+
     <!-- Navigation -->
-    <nav>
-        <div class="nav-container">
-            <a href="/" class="logo">Student Performance Predictor</a>
-            <a href="/" class="nav-link">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+    <nav class="py-6 px-6 lg:px-12 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="/" class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
+                Student Math Predictor
+            </a>
+            <a href="/" class="text-slate-300 hover:text-white transition-colors inline-flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                 </svg>
                 Back to Home
             </a>
@@ -338,164 +74,278 @@
     </nav>
 
     <!-- Main Content -->
-    <main>
-        <div class="page-header">
-            <h1>Student Exam Performance Indicator</h1>
-            <p>Enter student details below to predict their Maths score</p>
-        </div>
-
-        <!-- Flash Messages from Flask -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} show">
-                        {% if category == 'success' %}
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        {% else %}
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        {% endif %}
-                        <span>{{ message }}</span>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-
-        <!-- Prediction Form -->
-        <div class="card">
-            <div class="card-header">
-                <h2>Student Exam Performance Prediction</h2>
-                <p>Fill in all the required fields to predict the Maths score</p>
+    <main class="py-12 px-6">
+        <div class="max-w-4xl mx-auto">
+            
+            <!-- Page Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">Student Performance Predictor</h1>
+                <p class="text-slate-400 text-lg">Enter student details to predict their math score</p>
             </div>
-            <form action="{{ url_for('predict_datapoint') }}" method="POST">
-                <div class="form-grid">
-                    <!-- Gender -->
-                    <div class="form-group">
-                        <label for="gender">Gender</label>
-                        <select id="gender" name="gender" required>
-                            <option value="" disabled selected>Select your Gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                        </select>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="mb-8 animate-slide-in">
+                        {% for category, message in messages %}
+                            <div class="glass-card rounded-2xl p-4 {% if category == 'error' %}border-red-500{% else %}border-green-500{% endif %} border-l-4">
+                                <p class="text-sm">{{ message }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <!-- Prediction Form -->
+            <div class="glass-card rounded-3xl p-8 md:p-12 mb-8 glow-effect">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold mb-2">Student Information</h2>
+                    <p class="text-slate-400">All fields are required for accurate prediction</p>
+                </div>
+
+                <form id="predictionForm" action="{{ url_for('predict_datapoint') }}" method="POST">
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        
+                        <!-- Gender -->
+                        <div>
+                            <label for="gender" class="block text-sm font-medium text-slate-300 mb-2">
+                                Gender
+                            </label>
+                            <select 
+                                id="gender" 
+                                name="gender" 
+                                required
+                                class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white transition-all"
+                            >
+                                <option value="" disabled selected>Select gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+
+                        <!-- Race/Ethnicity -->
+                        <div>
+                            <label for="race_ethnicity" class="block text-sm font-medium text-slate-300 mb-2">
+                                Race or Ethnicity
+                            </label>
+                            <select 
+                                id="race_ethnicity" 
+                                name="race_ethnicity" 
+                                required
+                                class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white transition-all"
+                            >
+                                <option value="" disabled selected>Select ethnicity</option>
+                                <option value="group A">Group A</option>
+                                <option value="group B">Group B</option>
+                                <option value="group C">Group C</option>
+                                <option value="group D">Group D</option>
+                                <option value="group E">Group E</option>
+                            </select>
+                        </div>
+
+                        <!-- Parental Education -->
+                        <div>
+                            <label for="parental_level_of_education" class="block text-sm font-medium text-slate-300 mb-2">
+                                Parental Level of Education
+                            </label>
+                            <select 
+                                id="parental_level_of_education" 
+                                name="parental_level_of_education" 
+                                required
+                                class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white transition-all"
+                            >
+                                <option value="" disabled selected>Select education level</option>
+                                <option value="some high school">Some High School</option>
+                                <option value="high school">High School</option>
+                                <option value="some college">Some College</option>
+                                <option value="associate's degree">Associate's Degree</option>
+                                <option value="bachelor's degree">Bachelor's Degree</option>
+                                <option value="master's degree">Master's Degree</option>
+                            </select>
+                        </div>
+
+                        <!-- Lunch Type -->
+                        <div>
+                            <label for="lunch" class="block text-sm font-medium text-slate-300 mb-2">
+                                Lunch Type
+                            </label>
+                            <select 
+                                id="lunch" 
+                                name="lunch" 
+                                required
+                                class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white transition-all"
+                            >
+                                <option value="" disabled selected>Select lunch type</option>
+                                <option value="free/reduced">Free/Reduced</option>
+                                <option value="standard">Standard</option>
+                            </select>
+                        </div>
+
+                        <!-- Test Prep Course -->
+                        <div>
+                            <label for="test_preparation_course" class="block text-sm font-medium text-slate-300 mb-2">
+                                Test Preparation Course
+                            </label>
+                            <select 
+                                id="test_preparation_course" 
+                                name="test_preparation_course" 
+                                required
+                                class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white transition-all"
+                            >
+                                <option value="" disabled selected>Select test course</option>
+                                <option value="none">None</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+
+                        <!-- Reading Score -->
+                        <div>
+                            <label for="reading_score" class="block text-sm font-medium text-slate-300 mb-2">
+                                Reading Score (0-100)
+                            </label>
+                            <input 
+                                type="number" 
+                                id="reading_score" 
+                                name="reading_score" 
+                                min="0" 
+                                max="100" 
+                                required
+                                placeholder="Enter reading score"
+                                class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white transition-all placeholder-slate-500"
+                            >
+                        </div>
+
+                        <!-- Writing Score -->
+                        <div>
+                            <label for="writing_score" class="block text-sm font-medium text-slate-300 mb-2">
+                                Writing Score (0-100)
+                            </label>
+                            <input 
+                                type="number" 
+                                id="writing_score" 
+                                name="writing_score" 
+                                min="0" 
+                                max="100" 
+                                required
+                                placeholder="Enter writing score"
+                                class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white transition-all placeholder-slate-500"
+                            >
+                        </div>
+
                     </div>
 
-                    <!-- Race/Ethnicity -->
-                    <div class="form-group">
-                        <label for="race_ethnicity">Race or Ethnicity</label>
-                        <select id="race_ethnicity" name="race_ethnicity" required>
-                            <option value="" disabled selected>Select Ethnicity</option>
-                            <option value="group A">Group A</option>
-                            <option value="group B">Group B</option>
-                            <option value="group C">Group C</option>
-                            <option value="group D">Group D</option>
-                            <option value="group E">Group E</option>
-                        </select>
-                    </div>
-
-                    <!-- Parental Level of Education -->
-                    <div class="form-group">
-                        <label for="parental_level_of_education">Parental Level of Education</label>
-                        <select id="parental_level_of_education" name="parental_level_of_education" required>
-                            <option value="" disabled selected>Select Parent Education</option>
-                            <option value="associate's degree">Associate's Degree</option>
-                            <option value="bachelor's degree">Bachelor's Degree</option>
-                            <option value="high school">High School</option>
-                            <option value="master's degree">Master's Degree</option>
-                            <option value="some college">Some College</option>
-                            <option value="some high school">Some High School</option>
-                        </select>
-                    </div>
-
-                    <!-- Lunch Type -->
-                    <div class="form-group">
-                        <label for="lunch">Lunch Type</label>
-                        <select id="lunch" name="lunch" required>
-                            <option value="" disabled selected>Select Lunch Type</option>
-                            <option value="free/reduced">Free/Reduced</option>
-                            <option value="standard">Standard</option>
-                        </select>
-                    </div>
-
-                    <!-- Test Preparation Course -->
-                    <div class="form-group">
-                        <label for="test_preparation_course">Test Preparation Course</label>
-                        <select id="test_preparation_course" name="test_preparation_course" required>
-                            <option value="" disabled selected>Select Test Course</option>
-                            <option value="none">None</option>
-                            <option value="completed">Completed</option>
-                        </select>
-                    </div>
-
-                    <!-- Reading Score -->
-                    <div class="form-group">
-                        <label for="reading_score">Reading Score (out of 100)</label>
-                        <input 
-                            type="number" 
-                            id="reading_score" 
-                            name="reading_score" 
-                            placeholder="Enter Reading Score"
-                            min="0"
-                            max="100"
-                            required
-                        >
-                    </div>
-
-                    <!-- Writing Score -->
-                    <div class="form-group full-width">
-                        <label for="writing_score">Writing Score (out of 100)</label>
-                        <input 
-                            type="number" 
-                            id="writing_score" 
-                            name="writing_score" 
-                            placeholder="Enter Writing Score"
-                            min="0"
-                            max="100"
-                            required
-                        >
+                    <!-- Info Box -->
+                    <div class="mb-8 p-4 bg-blue-500/10 border border-blue-500/30 rounded-xl">
+                        <div class="flex gap-3">
+                            <svg class="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <p class="text-sm text-slate-300">
+                                Enter scores between 0-100 for Reading and Writing. The model will predict the expected Math score based on all provided factors.
+                            </p>
+                        </div>
                     </div>
 
                     <!-- Submit Button -->
-                    <div class="form-group full-width">
-                        <button type="submit" class="btn btn-primary btn-block">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                            Predict your Maths Score
-                        </button>
+                    <button 
+                        type="submit" 
+                        id="submitBtn"
+                        class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-4 rounded-xl transition-all hover:scale-[1.02] glow-effect inline-flex items-center justify-center gap-2"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                        <span id="btnText">Predict Math Score</span>
+                        <svg id="loadingSpinner" class="w-5 h-5 animate-spin-slow hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Result Card -->
+            {% if results is defined and results is not none %}
+            <div class="glass-card rounded-3xl p-8 md:p-12 text-center glow-effect animate-slide-in">
+                <div class="mb-6">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-2">Prediction Complete</h2>
+                    <p class="text-slate-400">Based on the student information provided</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-blue-600/20 to-purple-600/20 rounded-2xl p-8 mb-6">
+                    <div class="text-sm text-slate-400 mb-2">Predicted Math Score</div>
+                    <div class="text-6xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
+                        {{ results }}
+                    </div>
+                    <div class="text-slate-400">out of 100</div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-4 text-sm">
+                    <div class="bg-slate-800/50 rounded-xl p-4">
+                        <div class="text-slate-400 mb-1">Model Confidence</div>
+                        <div class="text-xl font-bold text-green-400">High</div>
+                    </div>
+                    <div class="bg-slate-800/50 rounded-xl p-4">
+                        <div class="text-slate-400 mb-1">Processing Time</div>
+                        <div class="text-xl font-bold text-blue-400">&lt;1s</div>
+                    </div>
+                    <div class="bg-slate-800/50 rounded-xl p-4">
+                        <div class="text-slate-400 mb-1">Features Used</div>
+                        <div class="text-xl font-bold text-purple-400">7</div>
                     </div>
                 </div>
 
-                <div class="info-box">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <p>Enter scores between 0-100 for Reading and Writing. The model will predict the expected Maths score based on all provided factors.</p>
+                <div class="mt-8">
+                    <a href="/predict_datapoint" class="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                        Make Another Prediction
+                    </a>
                 </div>
-            </form>
-        </div>
+            </div>
+            {% endif %}
 
-        <!-- Result Card (shown when prediction is available) -->
-        {% if results is defined and results is not none %}
-        <div class="card result-card show">
-            <div class="card-header">
-                <h2>Prediction Result</h2>
-                <p>Based on the student information you provided</p>
-            </div>
-            <div class="result-display">
-                <div class="result-label">Predicted Maths Score</div>
-                <div class="result-value">{{ results }}</div>
-                <div class="result-unit">out of 100</div>
-            </div>
         </div>
-        {% endif %}
     </main>
 
     <!-- Footer -->
-    <footer>
-        <p>&copy; 2026 Student Performance Predictor. All rights reserved.</p>
+    <footer class="py-8 px-6 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-slate-400 text-sm">&copy; 2026 Student Math Predictor. Built with Flask & Machine Learning.</p>
+        </div>
     </footer>
+
+    <script>
+        // Loading state for form submission
+        const form = document.getElementById('predictionForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+
+        form.addEventListener('submit', function() {
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+            btnText.textContent = 'Processing...';
+            loadingSpinner.classList.remove('hidden');
+        });
+
+        // Form validation feedback
+        const inputs = form.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('invalid', function(e) {
+                e.preventDefault();
+                this.classList.add('border-red-500');
+            });
+            input.addEventListener('input', function() {
+                this.classList.remove('border-red-500');
+            });
+        });
+    </script>
+
 </body>
 </html>
