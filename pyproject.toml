@@ -1,0 +1,11 @@
+[project]
+name = "student-math-predictor"
+version = "0.1.0"
+dependencies = [
+  "flask",
+  "gunicorn",
+  "numpy",
+  "pandas",
+  "scikit-learn",
+  "python-dotenv"
+]
